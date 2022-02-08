@@ -265,13 +265,14 @@ def train(train_loader, model, criterion, optimizer, epoch, log, tf_writer):
 
         if i % args.print_freq == 0:
             output = ('Epoch: [{0}][{1}/{2}], lr: {lr:.5f}\t'
-                      'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
-                      'Data {data_time.val:.3f} ({data_time.avg:.3f})\t'
-                      'Loss {loss.val:.4f} ({loss.avg:.4f})\t'
-                      'Prec@1 {top1.val:.3f} ({top1.avg:.3f})\t'
-                      'Prec@5 {top5.val:.3f} ({top5.avg:.3f})'.format(
+                      'batch_cost: {batch_time.val:.5f} sec\t'
+                      'reader_cost: {data_time.val:.5f} sec\t'
+                      'ips: {ips:.5f} instance/sec.\t'
+                      'loss: {loss.val:.4f} \t'
+                      'Prec@1 {top1.val:.3f}\t'
+                      'Prec@5 {top5.val:.3f}'.format(
                 epoch, i, len(train_loader), batch_time=batch_time,
-                data_time=data_time, loss=losses, top1=top1, top5=top5, lr=optimizer.param_groups[-1]['lr'] * 0.1))  # TODO
+                data_time=data_time, ips=input.size(0)/batch_time.val, loss=losses, top1=top1, top5=top5, lr=optimizer.param_groups[-1]['lr'] * 0.1))  # TODO
             print(output)
             log.write(output + '\n')
             log.flush()
@@ -284,6 +285,7 @@ def train(train_loader, model, criterion, optimizer, epoch, log, tf_writer):
 
 def validate(val_loader, model, criterion, epoch, log=None, tf_writer=None):
     batch_time = AverageMeter()
+    data_time = AverageMeter()
     losses = AverageMeter()
     top1 = AverageMeter()
     top5 = AverageMeter()
@@ -294,6 +296,7 @@ def validate(val_loader, model, criterion, epoch, log=None, tf_writer=None):
     end = time.time()
     with torch.no_grad():
         for i, (input, target) in enumerate(val_loader):
+            data_time.update(time.time() - end)
             target = target.cuda()
 
             # compute output
@@ -313,11 +316,13 @@ def validate(val_loader, model, criterion, epoch, log=None, tf_writer=None):
 
             if i % args.print_freq == 0:
                 output = ('Test: [{0}/{1}]\t'
-                          'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
-                          'Loss {loss.val:.4f} ({loss.avg:.4f})\t'
-                          'Prec@1 {top1.val:.3f} ({top1.avg:.3f})\t'
-                          'Prec@5 {top5.val:.3f} ({top5.avg:.3f})'.format(
-                    i, len(val_loader), batch_time=batch_time, loss=losses,
+                          'batch_cost: {batch_time.val:.5f} sec\t'
+                          'reader_cost: {data_time.val:.5f} sec\t'
+                          'ips: {ips:.5f} instance/sec.\t'
+                          'loss: {loss.val:.4f}\t'
+                          'Prec@1 {top1.val:.3f}\t'
+                          'Prec@5 {top5.val:.3f}'.format(
+                    i, len(val_loader), batch_time=batch_time, data_time=data_time, ips=input.size(0)/batch_time.val, loss=losses,
                     top1=top1, top5=top5))
                 print(output)
                 if log is not None:
