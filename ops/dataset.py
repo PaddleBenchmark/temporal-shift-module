@@ -13,7 +13,7 @@ from numpy.random import randint
 
 class VideoRecord(object):
     def __init__(self, row):
-        self._data = row
+        self._data = row.strip().split(' ')
 
     @property
     def path(self):
@@ -93,9 +93,11 @@ class TSNDataSet(data.Dataset):
 
     def _parse_list(self):
         # check the frame number is large >3:
-        tmp = [x.strip().split(' ') for x in open(self.list_file)]
-        if not self.test_mode or self.remove_missing:
-            tmp = [item for item in tmp if int(item[1]) >= 3]
+        # tmp = [x.strip().split(' ') for x in open(self.list_file)]
+        # if not self.test_mode or self.remove_missing:
+        #     tmp = [item for item in tmp if int(item[1]) >= 3]
+        tmp_f = open(self.list_file, 'r')
+        tmp = tmp_f.readlines()
         self.video_list = [VideoRecord(item) for item in tmp]
 
         if self.image_tmpl == '{:06d}-{}_{:05d}.jpg':

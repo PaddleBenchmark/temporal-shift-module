@@ -1,0 +1,3 @@
+TensorboardX
+tqdm
+scikit-learn

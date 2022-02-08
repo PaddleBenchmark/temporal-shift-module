@@ -5,7 +5,7 @@
 
 import os
 
-ROOT_DATASET = '/ssd/video/'  # '/data/jilin/'
+ROOT_DATASET = './' #'/ssd/video/'  # '/data/jilin/'
 
 
 def return_ucf101(modality):
@@ -92,9 +92,12 @@ def return_jester(modality):
 def return_kinetics(modality):
     filename_categories = 400
     if modality == 'RGB':
-        root_data = ROOT_DATASET + 'kinetics/images'
-        filename_imglist_train = 'kinetics/labels/train_videofolder.txt'
-        filename_imglist_val = 'kinetics/labels/val_videofolder.txt'
+        #root_data = ROOT_DATASET + 'kinetics/images'
+        #filename_imglist_train = 'kinetics/labels/train_videofolder.txt'
+        #filename_imglist_val = 'kinetics/labels/val_videofolder.txt'
+        root_data = 'data/rawframes'
+        filename_imglist_train = 'data/train_small_frames.list'
+        filename_imglist_val = 'data/train_small_frames.list'
         prefix = 'img_{:05d}.jpg'
     else:
         raise NotImplementedError('no such modality:' + modality)
