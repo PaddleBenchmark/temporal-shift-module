@@ -96,8 +96,8 @@ def return_kinetics(modality):
         #filename_imglist_train = 'kinetics/labels/train_videofolder.txt'
         #filename_imglist_val = 'kinetics/labels/val_videofolder.txt'
         root_data = 'data/rawframes'
-        filename_imglist_train = 'data/train_small_frames.list'
-        filename_imglist_val = 'data/train_small_frames.list'
+        filename_imglist_train = 'data/train_fleet_frames.list'
+        filename_imglist_val = 'data/val_fleet_frames.list'
         prefix = 'img_{:05d}.jpg'
     else:
         raise NotImplementedError('no such modality:' + modality)
