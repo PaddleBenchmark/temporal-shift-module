@@ -397,11 +397,10 @@ def validate(val_loader, model, criterion, epoch, log=None, tf_writer=None):
                 output = ('Test: [{0}/{1}]\t'
                           'batch_cost: {batch_time.val:.5f} sec\t'
                           'reader_cost: {data_time.val:.5f} sec\t'
-                          'ips: {ips:.5f} instance/sec.\t'
                           'loss: {loss.val:.4f}\t'
                           'Prec@1 {top1.val:.3f}\t'
                           'Prec@5 {top5.val:.3f}'.format(
-                    i, len(val_loader), batch_time=batch_time, data_time=data_time, ips=input.size(0)/batch_time.val, loss=losses,
+                    i, len(val_loader), batch_time=batch_time, data_time=data_time, loss=losses,
                     top1=top1, top5=top5))
                 print(output)
                 if log is not None:
