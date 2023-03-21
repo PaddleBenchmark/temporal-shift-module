@@ -76,3 +76,4 @@ parser.add_argument('--non_local', default=False, action="store_true", help='add
 parser.add_argument('--dense_sample', default=False, action="store_true", help='use dense sample for video dataset')
 parser.add_argument("--local_rank", default=0, type=int)
 parser.add_argument("--parallel", action='store_true')
+parser.add_argument('--torchcompile', default=False, action="store_true", help='use torch compile mode')

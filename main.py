@@ -89,6 +89,10 @@ def main():
     else:
         model = torch.nn.DataParallel(model, device_ids=args.gpus).cuda()
 
+   # compile mode to speed up 
+   if args.torchcompile:
+        model = torch.compile (model)
+
     optimizer = torch.optim.SGD(policies,
                                 args.lr,
                                 momentum=args.momentum,
